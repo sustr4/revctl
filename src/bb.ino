@@ -18,6 +18,7 @@ int readings[numReadings];      // the readings from the analog input
 int index = 0;                  // the index of the current reading
 int total = 0;                  // the running total
 int average = 0;        
+int current_pot = 0;
 
 float otacky = 0;
 
@@ -41,7 +42,8 @@ void loop() {
 	  // subtract the last reading:
 	  total= total - readings[index];         
 	  // read from the sensor:  
-	  readings[index] = analogRead(sensorPin); 
+	  current_pot = analogRead(sensorPin);
+	  readings[index] = current_pot;
 	  // add the reading to the total:
 	  total= total + readings[index];       
 	  // advance to the next position in the array:  
@@ -61,9 +63,9 @@ void loop() {
   }
   if((count_status%100)==0){
 	  lcd.setCursor(0, 1);
-	  lcd.print(delay_time);lcd.print("ms   ");
+	  lcd.print(current_pot);lcd.print("ms   ");
 	  lcd.setCursor(9, 1);
-	  otacky = (float(60000)/float(delay_time))/200.0;
+	  otacky = (float(60000)/float(current_pot))/200.0;
 	  lcd.print(otacky);lcd.print("RPM");
   }
   
