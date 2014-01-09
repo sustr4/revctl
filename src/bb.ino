@@ -4,9 +4,7 @@
 LiquidCrystal lcd(12, 11, 7, 6, 5, 4);
 int ConPin = 3;
 int sensorPin = A4;
-int delay_time = 0;
-int delay_time2 = 0;
-int delay_time3 = 0;
+int set_rpm = 1; // RPM in (s/10)^-1
 int step_pin = 8;
 int dir_pin = 9;
 
@@ -20,6 +18,7 @@ int total = 0;                  // the running total
 int average = 0;        
 
 float otacky = 0;
+int prodleva = 2999;	
 
 
 void setup() {
@@ -53,21 +52,21 @@ void loop() {
 	    index = 0;                           
 
 	  // calculate the average:
-	  delay_time = total / numReadings;
+	  set_rpm = total / numReadings;
 	    
-	  //delay_time = analogRead(sensorPin);
-	  //delay_time =(delay_time+delay_time2+delay_time3)/3;
-	  delay_time = map(delay_time, 0, 1023, 30, 200); 
+	  set_rpm = map(set_rpm, 0, 1023, 1, 100); 
   }
   if((count_status%100)==0){
+	  otacky = (float)set_rpm / 10.0; // set RPM kept in 1/10ths!
+	  prodleva = (int)(300.0 / otacky) - 1; // 60000 ms in a minute / 200 pulses in a rev. = 300
+	
 	  lcd.setCursor(0, 1);
-	  lcd.print(delay_time);lcd.print("ms   ");
+	  lcd.print(prodleva);lcd.print("ms   ");
 	  lcd.setCursor(9, 1);
-	  otacky = (float(60000)/float(delay_time))/200.0;
 	  lcd.print(otacky);lcd.print("RPM");
   }
   
-  if (count_status >= int(float(delay_time)*0.92)){ 
+  if (count_status >= prodleva) { 
 	  digitalWrite(step_pin, HIGH);  
 	  // stop the program for <sensorValue> milliseconds:
 	  delay(1);          
