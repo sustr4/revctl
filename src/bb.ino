@@ -76,9 +76,11 @@ void loop() {
 	  count_status = 0;
   }
 
-  // stop the program for for <sensorValue> milliseconds:
-  delay(1); 
-  count_status++;
+  else {
+	  // stop the program for for <sensorValue> milliseconds:
+	  delay(1); 
+	  count_status++;
+  }
   
 }
 
