@@ -10,7 +10,7 @@ int dir_pin = 9;
 
 int count_status = 0;
 
-const int numReadings = 20;
+const int numReadings = 10;
 
 int readings[numReadings];      // the readings from the analog input
 int index = 0;                  // the index of the current reading
